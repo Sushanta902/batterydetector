@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charge Detector</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<div class="lighting" id="particle">
+  <img src="a.gif">
+</div>
+
+<div class="mainDiv">
+  <div class="liquid">
+    <span class="status" id="status">🗲</span>
+    <span class="level" id="level">10%</span>
+    <div class= "liquid wave" id="wave"></div>
+  </div>
+</div>
+
+</body>
+
+<script type="text/javascript">
+navigator.getBattery().then(function(battery){
+
+  // defining
+let waving = document.getElementById('wave');
+let leveling = document.getElementById('level');
+let  Blevel =-(battery.level*100)-100;
+let cTime  = battery.chargingTime;
+
+// conditions
+function condition(){
+    leveling.innerHTML= battery.level*100+'%';
+    waving.style.top = -((battery.level*100)+100)+'%';
+    }
+condition();
+
+
+// checking function
+function checking(){
+    if (battery.charging == true){
+      document.getElementById('status').innerHTML = "🗲";
+      document.getElementById('particle').style.display = "block";
+      document.querySelector('body').style.transition ="background 2s";
+      document.querySelector('body').style.background = "radial-gradient(white, #0fff00)";
+      document.getElementById('status').style.textShadow = "0 0 15px white, 0 0 15px white";
+
+    }
+    else if (battery.charging == false){
+      document.getElementById('status').innerHTML = "🗲";
+      document.getElementById('particle').style.display = "none";
+      document.querySelector('body').style.transition ="background 2s";
+      document.querySelector('body').style.background = "radial-gradient(white, gray)";
+      document.getElementById('status').style.textShadow  = "0px 0px 0px";
+    }}
+checking();
+
+ // EventListener and callinf function
+battery.onlevelchange = function(){condition()};
+
+// callling function of charge change
+battery.onchargingchange = function(){checking()};
+
+ });
+
+
+</script>
+</html>
